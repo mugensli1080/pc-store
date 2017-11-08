@@ -1,0 +1,7 @@
+.user-profile {
+    border-radius: 50%;
+  
+    object-fit: cover;
+}
+
+.badge { background-color: rgb(207, 166, 29)}

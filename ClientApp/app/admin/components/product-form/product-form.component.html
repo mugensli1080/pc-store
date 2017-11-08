@@ -1,0 +1,127 @@
+<h1>Product</h1>
+<hr>
+<ul class="nav nav-tabs" role="tablist" *ngIf="product.id else newProduct">
+    <li class="active" role="presentation">
+        <a data-toggle="tab" href="#detail" role="tab" aria-controls="detail">Detail</a>
+    </li>
+    <li role="presentation" disable="productId">
+        <a data-toggle="tab" href="#productPhoto" role="tab" aria-controls="productPhoto">Photo</a>
+    </li>
+    <li role="presentation">
+        <a data-toggle="tab" href="#specPhoto" role="tab" aria-controls="specPhoto">Spec.</a>
+    </li>
+</ul>
+
+<ng-template #newProduct>
+    <ul class="nav nav-tabs" role="tablist">
+        <li class="active" role="presentation">
+            <a data-toggle="tab" href="#detail" role="tab" aria-controls="detail">Detail</a>
+        </li>
+        <li class="disabled">
+            <a>Photo</a>
+        </li>
+        <li class="disabled">
+            <a>Spec.</a>
+        </li>
+    </ul>
+</ng-template>
+
+<div class="tab-content">
+    <div class="tab-pane active" id="detail" role="tabpanel" id="detail">
+        <h1>Product Detail</h1>
+        <form #f="ngForm" (ngSubmit)="save(f.form)" novalidate>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="name">Name</label>
+                        <input #name="ngModel" [(ngModel)]="product.name" id="name" name="name" type="text" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="description">Description</label>
+                        <textarea #description="ngModel" [(ngModel)]="product.description" name="description" id="description" cols="30" rows="10"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="price">Price</label>
+                        <input #price="ngModel" [(ngModel)]="product.price" id="price" name="price" type="number" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="stock">Stock</label>
+                        <input #stock="ngModel" [(ngModel)]="product.stock" id="stock" name="stock" type="number" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="category">Categories</label>
+                        <select *ngIf="categories$ | async as categories" (change)="categoryChange(category.value)" #category="ngModel" [(ngModel)]="product.categoryId"
+                            name="categoryId" id="categories" class="form-control" required>
+                            <option *ngFor="let c of categories" [value]="c.id">{{ c.name }}</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="subCategories">Sub Categories</label>
+                        <select *ngIf="subCategories$ | async as subCategories" #subCategory="ngModel" [(ngModel)]="product.subCategoryId" name="subCategoryId"
+                            id="subCategories" class="form-control" required>
+                            <option *ngFor="let sc of subCategories" [value]="sc.id">{{ sc.name }}</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="videoLink">Video Link</label>
+                        <input #videoLink="ngModel" [(ngModel)]="product.videoLink" id="videoLink" name="videoLink" type="text" class="form-control">
+                    </div>
+                    <hr>
+                    <p>
+                        <a class="btn btn-primary" (click)="save(f.value)">Save</a>
+                        <button class="btn btn-danger" (click)="deleteProduct()" *ngIf="product.id">Delete</button>
+                        <a class="btn btn-default" [routerLink]="['/admin/products']">View Products List</a>
+                    </p>
+                </div>
+                <div class="col-md-6" *ngIf="productPhoto?.activated">
+                    <img src="/uploads/productphotos/{{ productPhoto?.thumbnail }}" class="img-thumbnail">
+                </div>
+            </div>
+
+        </form>
+    </div>
+
+    <div class="tab-pane" role="tabpanel" id="productPhoto">
+        <h2>Product Photo</h2>
+        <input class="form-control" type="file" (change)="uploadProductPhoto($event)" #productPhotoInput>
+        <hr>
+
+        <div class="progress" *ngIf="progress?.percentage < 100 && progress?.percentage > 0 && progressTab == 1">
+            <div class="progress-bar" [style.width]="progress?.percentage + '%'">
+                <span class="sr-only">{{ progress?.percentage }} % Complete</span>
+            </div>
+        </div>
+        <div *ngFor="let p of photos.product">
+            <div class="row">
+                <a>
+                    <span class="glyphicon glyphicon-ok-sign" (click)="activateProductPhoto(p)" [style.color]="p.activated ? 'green' : 'blue'"></span>
+                </a>
+                <a>
+                    <span class="glyphicon glyphicon-remove-sign" (click)="deleteProductPhoto(p.id)" [style.color]="'red'" *ngIf="!p.activated"></span>
+                </a>
+            </div>
+            <img *ngIf="p.thumbnail" src="/uploads/productphotos/{{ p.thumbnail }}" class="img-thumbnail">
+        </div>
+    </div>
+    <div class="tab-pane" role="tabpanel" id="specPhoto">
+        <h2>Specification Photo</h2>
+        <input class="form-control" type="file" (change)="uploadSpecPhoto($event)" #specPhotoInput>
+        <hr>
+
+        <div class="progress" *ngIf="progress?.percentage < 100 && progress?.percentage > 0 && progressTab == 2">
+            <div class="progress-bar" [style.width]="progress?.percentage + '%'">
+                <span class="sr-only">{{ progress?.percentage }} % Complete</span>
+            </div>
+        </div>
+        <div *ngFor="let sp of photos.specification">
+            <div class="row">
+                <div class="row pull-right">
+                    <a>
+                        <span class="glyphicon glyphicon-remove-sign" (click)="deleteSpecificationPhoto(sp.id)" [style.color]="'red'"></span>
+                    </a>
+                </div>
+                <img *ngIf="sp.thumbnail" src="/uploads/specificationphotos/{{ sp.thumbnail }}" class="img-thumbnail">
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,23 @@
+.price {
+    font-size: 18px;
+    font-weight: bold;
+    color: red;
+}
+.in-stock {
+    margin-top: 5px;
+    font-size: 14px;
+    font-weight: bold;
+    background-color: rgb(71, 124, 236);
+}
+
+.add-to-cart {
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.sold-out {
+    background-color: rgb(148, 148, 148);
+    color: white;
+    font-weight: bold;
+}
+

@@ -1,0 +1,22 @@
+<div class="card" style="width: 20rem;">
+    <img class="card-img-top" [style.width]="'100%'" [src]="productCard.imageUrl" alt="Card image">
+    <div class="card-block">
+        <h4 class="card-title">
+            <a [routerLink]="productCard.link" [style.width]="'100%'">{{ productCard.title }}</a>
+        </h4>
+        <span>{{ productCard.price | currency:'AUD':true }}</span>
+        <p class="card-text"> {{ productCard.descripton }} </p>
+        <div class="row" [style.text-align]="'center'" *ngIf="!productCard.inStock">
+            <a [style.width]="'90%'" class="btn sold-out" disabled>SOLD OUT</a>
+        </div>
+        <div class="row" [style.text-align]="'center'" *ngIf="productCard.inStock">
+            <a [style.width]="'90%'" class="btn btn-success add-to-cart" (click)="addToCart()">
+                <i class="glyphicon glyphicon-shopping-cart"></i>
+                Add To Cart
+            </a>
+        </div>
+        <div class="row" [style.text-align]="'center'">
+            <span [style.width]="'90%'" class="btn btn-primary in-stock">{{ productCard.stockMessage}}</span>
+        </div>
+    </div>
+</div>

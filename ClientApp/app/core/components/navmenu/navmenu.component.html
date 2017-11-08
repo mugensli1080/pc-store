@@ -1,0 +1,101 @@
+<nav class="navbar navbar-expand-md navbar-default bg-light fixed-top">
+    <div class="container" [style.width]="'80%'">
+        <div class="row" [style.width]="'100%'">
+            <div class="col-md-7">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false"
+                        aria-controls="navbar">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" [routerLink]="['/']">PC - Store</a>
+                </div>
+            </div>
+            <div class="col-md-5">
+                <div id="navbar" class="navbar-collapse collapse">
+                    <ul class="nav navbar-nav pull-right">
+                        <li [routerLinkActive]="['link-active']">
+                            <a [routerLink]="['/shopping-cart']">
+                                <span class='glyphicon glyphicon-shopping-cart'></span>
+                                <span class="badge">{{ itemsCount }}</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a (click)="auth0.login()" *ngIf="!auth0.isAuthenticated()">
+                                <span class='glyphicon glyphicon-user'></span> Login
+                            </a>
+                        </li>
+                        <li *ngIf="auth0.isAuthenticated()">
+                            <a>
+                                <span>
+                                    <img [src]="auth0.userProfile?.picture" class="user-profile" [style.width]="'10px'"> Hi, {{ auth0.userProfile?.nickname }}
+                                </span>
+                            </a>
+                        </li>
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                                <span class="caret"></span>
+                            </a>
+                            <ul class="dropdown-menu" *ngIf="auth0.isRole('Admin'); else shopper">
+                                <li>
+                                    <a [routerLink]="['/admin/products']">
+                                        <span class='glyphicon glyphicon-education'></span> Products List
+                                    </a>
+                                </li>
+                                <li>
+                                    <a [routerLink]="['/admin/orders']">
+                                        <span class='glyphicon glyphicon-education'></span> Orders
+                                    </a>
+                                </li>
+                                <li>
+                                    <a [routerLink]="['/admin/categories']">
+                                        <span class='glyphicon glyphicon-education'></span> Categories
+                                    </a>
+                                </li>
+                                <li role="separator" class="divider"></li>
+                                <li class="dropdown-header">User</li>
+                                <li *ngIf="auth0.isAuthenticated()">
+                                    <a>
+                                        <span>
+                                            <img [src]="auth0.userProfile?.picture" class="user-profile" [style.width]="'10px'"> Hi, {{ auth0.userProfile?.nickname }}
+                                        </span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a (click)="auth0.logout()" *ngIf="auth0.isAuthenticated()">
+                                        <span class='glyphicon glyphicon-user'></span> Logout
+                                    </a>
+                                </li>
+                            </ul>
+                            <ng-template #shopper>
+                                <ul class="dropdown-menu">
+                                    <li>
+                                        <a [routerLink]="['/my/orders']">
+                                            <span class='glyphicon glyphicon-education'></span> My Orders
+                                        </a>
+                                    </li>
+                                    <li role="separator" class="divider"></li>
+                                    <li class="dropdown-header">User</li>
+                                    <li *ngIf="auth0.isAuthenticated()">
+                                        <a>
+                                            <span>
+                                                <img [src]="auth0.userProfile?.picture" class="user-profile" [style.width]="'10px'"> Hi, {{ auth0.userProfile?.nickname }}
+                                            </span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a (click)="auth0.logout()" *ngIf="auth0.isAuthenticated()">
+                                            <span class='glyphicon glyphicon-user'></span> Logout
+                                        </a>
+                                    </li>
+                                </ul>
+                            </ng-template>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>

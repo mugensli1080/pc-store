@@ -1,0 +1,14 @@
+textarea {
+    display: block;
+    width: 100%;
+    resize: vertical;
+}
+
+.disabled {
+    background-color: lightgray;
+    border: 1px dotted;
+}
+
+.glyphicon {
+    font-size: 34px;
+}

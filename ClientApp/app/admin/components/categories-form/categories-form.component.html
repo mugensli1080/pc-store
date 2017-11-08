@@ -1,0 +1,65 @@
+<h1>Category</h1>
+<br>
+<div *ngIf="category.id else newCategory">
+    <div class="row well">
+        <div class="col-md-8">
+            <input [disabled]="isDisabled" #categgory="ngModel" [(ngModel)]="category.name" name="category" id="categgory" type="text"
+                class="form-control" placeholder="Category Name">
+        </div>
+        <div class="col-md-4">
+            <button [disabled]="isDisabled" class="btn btn-primary" (click)="saveCategory()">Save</button>
+            <button [disabled]="isDisabled" class="btn btn-danger" (click)="deleteCategory()">Delete</button>
+            <a [routerLink]="['/admin/categories']" class="btn btn-default"> View Categories List</a>
+        </div>
+    </div>
+    <br>
+    <div class="list-group">
+        <h4>Sub Categories</h4>
+        <hr>
+        <div class="row">
+            <div class="col-md-8">
+                <input [disabled]="isDisabled" #newSubCategory type="text" class="form-control" (keyup)="onSearch(newSubCategory.value)"
+                    placeholder="Sub Category Name">
+            </div>
+            <div class="col-md-4">
+                <!-- <button class="btn btn-default">Search</button> -->
+                <button [disabled]="isDisabled" class="btn btn-primary" (click)="saveSubCategory()">Add</button>
+            </div>
+        </div>
+        <br>
+        <div class="row" *ngFor="let s of fileredSubcategories">
+            <div *ngIf="s != selectedSubCategory; else editing">
+                <div class="col-md-10">
+                    <a class="list-group-item" [ngClass]="{ 'disabled': isDisabled }" (click)="editSubCategory(s)">{{ s.name }}</a>
+                </div>
+                <div class="col-md-2">
+                    <button class="btn btn-default" (click)="editSubCategory(s)">Edit</button>
+                </div>
+            </div>
+            <ng-template #editing>
+                <br>
+                <div class="col-md-7">
+                    <input [(ngModel)]="selectedSubCategory.name" name="selectedSubCategory" id="selectedSubCategory" type="text" class="form-control">
+                </div>
+                <div class="col-md-5">
+                    <button class="btn btn-primary" (click)="saveSubCategory()">Save</button>
+                    <button class="btn btn-default" (click)="clearEdit()">Cancel</button>
+                    <button class="btn btn-danger" (click)="deleteSubCateggory()">Delete</button>
+                </div>
+                <br>
+                <br>
+            </ng-template>
+        </div>
+    </div>
+</div>
+
+<ng-template #newCategory>
+    <div class="row">
+        <div class="col-md-10">
+            <input #categgory="ngModel" [(ngModel)]="category.name" name="category" id="categgory" type="text" class="form-control" placeholder="Category Name">
+        </div>
+        <div class="col-md-2">
+            <button class="btn btn-primary" (click)="saveCategory()">Save</button>
+        </div>
+    </div>
+</ng-template>

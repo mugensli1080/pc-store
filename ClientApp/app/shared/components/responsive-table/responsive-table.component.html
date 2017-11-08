@@ -1,0 +1,48 @@
+<div class="form-group pull-right" [style.width]="'20%'">
+    <label for="search">Search</label>
+    <input #search="ngModel" [(ngModel)]="searchParam" (keyup)="onSearch()" id="search" name="search" type="text" class="form-control">
+</div>
+<table>
+    <caption *ngIf="option.caption">{{ option.caption }} </caption>
+    <thead>
+        <tr>
+            <th scope="col" *ngFor="let column of option.columns" (click)="sortBy(column)">{{ column }}</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let i of itemsList[currentPage-1]; let idx = index">
+            <td scope="row" *ngFor="let column of option.columns; let colIndex = index" attr.data-label="{{column}}">
+                <div *ngIf="colIndex > 0; else hasThumbnail">
+                    {{ i.item[column] }}
+                </div>
+                <ng-template #hasThumbnail>
+                    <div>
+                        <img *ngIf="option.hasThumbnail" [src]="i.item['thumbnail']" class="img-thumbnail" alt="">
+                    </div>
+                </ng-template>
+            </td>
+            <td>
+                <a [routerLink]="[option.itemLinkUrl, i.item.id]" class="btn btn-default">Edit</a>
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+<nav *ngIf="totalItems > pageSize">
+    <ul class="pagination">
+        <li [class.disabled]="currentPage == 1">
+            <a (click)="previous()" aria-label="Previous">
+                <span aria-hidden="true">&laquo;</span>
+            </a>
+        </li>
+        <li *ngFor="let page of pages" [class.active]="currentPage == page" (click)="changePage(page)">
+            <a>{{ page }}</a>
+        </li>
+        <li [class.disabled]="currentPage == pages.length">
+            <a (click)="next()" aria-label="Next">
+                <span aria-hidden="true">&raquo;</span>
+            </a>
+        </li>
+    </ul>
+</nav>
